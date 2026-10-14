@@ -1,16 +1,366 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>Hello World!</title>
-<link rel="stylesheet" href="bluestyle.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muhammed Safar — Backend Engineer</title>
+<meta name="description" content="Muhammed Safar is a backend software engineer in Thiruvananthapuram, Kerala, working in Java and building RAG systems, observability tools and mobile apps.">
+<meta property="og:title" content="Muhammed Safar — Backend Engineer">
+<meta property="og:description" content="Backend engineer in Thiruvananthapuram. RAG systems, observability tooling and mobile apps.">
+<meta property="og:url" content="https://safar-byte.github.io/">
+<meta name="theme-color" content="#EDF1EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121A20" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317212B'/%3E%3Crect x='6' y='9' width='14' height='4' rx='1' fill='%237FA6E6'/%3E%3Crect x='10' y='15' width='16' height='4' rx='1' fill='%237FA6E6'/%3E%3Crect x='13' y='21' width='8' height='4' rx='1' fill='%239DBB6E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDF1EE;
+    --surface: #F8FAF8;
+    --ink: #17212B;
+    --muted: #5B6B73;
+    --rule: #CCD6D1;
+    --span: #2457A6;
+    --span-soft: #D5E0F1;
+    --live: #5E7F3A;
+    --live-soft: #DCE6CF;
+    --focus: #2457A6;
+    --sans: "Schibsted Grotesk", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #121A20;
+      --surface: #18222A;
+      --ink: #E4EAE6;
+      --muted: #93A3A9;
+      --rule: #2A3740;
+      --span: #7FA6E6;
+      --span-soft: #22324A;
+      --live: #9DBB6E;
+      --live-soft: #26331C;
+      --focus: #9DBDF0;
+      color-scheme: dark;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 17px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--span); }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- header ---------- */
+  header.top {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding: 28px 0 0;
+    font-size: 15px;
+  }
+  header.top nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  header.top nav a { text-decoration: none; color: var(--muted); }
+  header.top nav a:hover { color: var(--ink); }
+  .handle { font-weight: 600; text-decoration: none; }
+
+  /* ---------- intro ---------- */
+  .intro { padding: 72px 0 36px; max-width: 760px; }
+  h1 {
+    font-size: clamp(44px, 8vw, 84px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    margin: 0 0 24px;
+  }
+  .lede { font-size: clamp(19px, 2.3vw, 22px); line-height: 1.5; margin: 0; max-width: 34em; }
+  .lede .muted { color: var(--muted); }
+
+  /* ---------- trace ---------- */
+  .trace {
+    margin: 28px 0 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px 20px 10px;
+  }
+  .trace-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .legend { display: flex; gap: 16px; font-family: var(--mono); font-size: 12px; }
+  .legend i { display: inline-block; width: 18px; height: 8px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+  .axis, .row-btn {
+    display: grid;
+    grid-template-columns: minmax(150px, 230px) 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .axis { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+  .ticks { position: relative; height: 18px; }
+  .ticks span { position: absolute; transform: translateX(-50%); }
+  .ticks span:first-child { transform: none; }
+
+  .rows { list-style: none; margin: 0; padding: 0; position: relative; }
+
+  .row { border-bottom: 1px solid var(--rule); }
+  .row:last-child { border-bottom: 0; }
+  .row-btn {
+    width: 100%; background: none; border: 0; color: inherit; text-align: left; cursor: pointer;
+    padding: 9px 0; font: inherit;
+  }
+  .row-btn:hover .name { color: var(--span); }
+  .name { font-size: 15px; font-weight: 600; line-height: 1.25; display: flex; gap: 8px; align-items: baseline; }
+  .name small { font-family: var(--mono); font-weight: 400; font-size: 11.5px; color: var(--muted); }
+  .chev { color: var(--muted); font-size: 12px; transition: transform .2s; flex: none; width: 10px; }
+  .row-btn[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .lane { position: relative; height: 22px; background: repeating-linear-gradient(to right, var(--rule) 0 1px, transparent 1px 20%); }
+  .bar {
+    position: absolute; top: 4px; height: 14px; border-radius: 3px;
+    background: var(--span);
+    min-width: 8px;
+    transform-origin: left center;
+  }
+  .bar.live { background: var(--live); }
+  .bar.live::after {
+    content: ""; position: absolute; right: -4px; top: 3px; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--live); box-shadow: 0 0 0 4px var(--live-soft);
+  }
+  .bar-label {
+    position: absolute; top: 2px; font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+    white-space: nowrap; padding-left: 8px; background: var(--surface); line-height: 18px;
+  }
+  .detail {
+    display: grid; grid-template-columns: minmax(150px, 230px) 1fr; gap: 16px;
+    padding: 0 0 14px;
+  }
+  .detail[hidden] { display: none; }
+  .detail p { margin: 0; font-size: 15px; max-width: 58ch; grid-column: 2; }
+  .detail p a { font-weight: 600; }
+
+  @media (max-width: 640px) {
+    .axis, .row-btn, .detail { grid-template-columns: 1fr; gap: 4px; }
+    .axis > :first-child { display: none; }
+    .detail p { grid-column: 1; }
+    .trace { padding: 16px 14px 6px; }
+  }
+
+  /* one orchestrated moment: spans draw in on load */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .bar { animation: draw .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 70ms + 150ms); }
+    .js .bar-label { animation: fade .4s ease both; animation-delay: calc(var(--i) * 70ms + 650ms); }
+  }
+  @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ---------- sections ---------- */
+  section { padding: 88px 0 0; }
+  h2 { font-size: 32px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 8px; font-weight: 700; }
+  .section-lede { color: var(--muted); margin: 0 0 36px; max-width: 46em; }
+
+  .feature {
+    display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px;
+    padding: 32px 0; border-top: 2px solid var(--ink);
+  }
+  .feature + .feature { border-top-width: 1px; border-top-color: var(--rule); }
+  .feature h3 { font-size: 28px; line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .feature h3 a { text-decoration: none; }
+  .feature h3 a:hover { text-decoration: underline; }
+  .feature .kind { color: var(--muted); margin: 0; font-size: 15px; }
+  .feature p { margin: 0 0 14px; }
+  .feature ul { margin: 0 0 16px; padding-left: 20px; }
+  .feature li { margin-bottom: 6px; }
+  .stack { color: var(--muted); font-size: 14px; margin: 0; }
+
+  .more { list-style: none; padding: 0; margin: 24px 0 0; border-top: 1px solid var(--rule); }
+  .more li {
+    display: grid; grid-template-columns: 210px 1fr auto; gap: 24px; align-items: baseline;
+    padding: 16px 0; border-bottom: 1px solid var(--rule);
+  }
+  .more a.title { font-weight: 600; text-decoration: none; }
+  .more a.title:hover { text-decoration: underline; }
+  .more .what { margin: 0; }
+  .more .year { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 760px) {
+    .feature { grid-template-columns: 1fr; gap: 12px; }
+    .more li { grid-template-columns: 1fr auto; gap: 4px 16px; }
+    .more .what { grid-column: 1 / -1; grid-row: 2; }
+  }
+
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px 40px; margin: 0; }
+  .skills dt { font-weight: 700; margin-bottom: 6px; }
+  .skills dd { margin: 0; color: var(--muted); }
+
+  footer { padding: 96px 0 56px; }
+  .contact { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 20px; max-width: 18em; }
+  .contact a { color: var(--span); }
+  .foot-links { display: flex; gap: 24px; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+  .foot-links a { color: var(--muted); }
+</style>
 </head>
 <body>
+<div class="wrap">
 
-<h1>Hello world!</h1>
-<div><img src="img_hello_world.jpg" alt="Hello World from Space" style="width:100%;max-width:640px"></div>
-<p>This is the first file in my new Git Repo.</p>
-<p>This line is here to show how merging works.</p>
-<div><img src="img_hello_git.jpg" alt="Hello Git" style="width:100%;max-width:640px"></div>
+  <header class="top">
+    <a class="handle" href="https://github.com/safar-byte">safar-byte</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
+  <main>
+    <div class="intro">
+      <h1>Muhammed Safar</h1>
+      <p class="lede">Backend software engineer in Thiruvananthapuram, Kerala, working in Java at SimpLogics Solutions. <span class="muted">Outside work I build retrieval systems, observability tools and mobile apps, and I like proving things with numbers.</span></p>
+    </div>
+
+    <figure class="trace" aria-labelledby="trace-title">
+      <div class="trace-head">
+        <span id="trace-title">Everything I've built so far, drawn as a trace. Select a span for details.</span>
+        <span class="legend" aria-hidden="true"><span><i style="background:var(--span)"></i>shipped</span><span><i style="background:var(--live)"></i>ongoing</span></span>
+      </div>
+      <div class="axis" aria-hidden="true"><span>span</span><div class="ticks" id="ticks"></div></div>
+      <ul class="rows" id="rows"></ul>
+    </figure>
+
+    <section id="work" aria-labelledby="work-title">
+      <h2 id="work-title">Selected work</h2>
+      <p class="section-lede">Two projects I'd point anyone to first, then the rest.</p>
+
+      <article class="feature">
+        <div>
+          <h3><a href="https://github.com/safar-byte/rag-from-scratch-to-production">RAG: From Scratch to Production</a></h3>
+          <p class="kind">Course and working service, 2026</p>
+        </div>
+        <div>
+          <p>Thirteen lessons that take a retrieval-augmented generation pipeline from "embed, search, stuff into a prompt" to hybrid retrieval, reranking, contextual chunking, agentic correction loops and grounded citations.</p>
+          <ul>
+            <li>The evaluation harness comes before any optimisation, and every technique after it has to earn its place with a measured delta — including the ones that didn't help.</li>
+            <li>A retrieval inspector shows which stage surfaced each chunk and what it scored.</li>
+            <li>Runs fully offline on local models; Claude and Voyage are one config flag away.</li>
+          </ul>
+          <p class="stack">Python, FastAPI, ChromaDB, BM25, Ollama, sentence-transformers, React</p>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3><a href="https://github.com/safar-byte/probe">PROBE</a></h3>
+          <p class="kind">Hackathon entry, Forge the Future 2026</p>
+        </div>
+        <div>
+          <p>Autonomous incident triage for microservices. PROBE watches OpenTelemetry data in Elastic, flags anomalous services, asks Claude on Amazon Bedrock for the single root cause, matches a runbook and opens a Kibana Case — no human in the loop.</p>
+          <ul>
+            <li>Detector, Correlator and Remediator as separate FastAPI services.</li>
+            <li>A self-grading harness injects real faults into the OpenTelemetry Astronomy Shop and times how long PROBE takes to name the culprit.</li>
+          </ul>
+          <p class="stack">Python, FastAPI, Elasticsearch ES|QL, Amazon Bedrock, Jina embeddings, Docker</p>
+        </div>
+      </article>
+
+      <ul class="more">
+        <li><a class="title" href="https://github.com/safar-byte/Blink-Ninja">Blink Ninja</a><p class="what">A webcam staring contest that detects your first blink with MediaPipe FaceMesh, in the browser.</p><span class="year">2026</span></li>
+        <li><a class="title" href="https://github.com/safar-byte/GrandGrab_Mobile">GrandGrab</a><p class="what">Food-delivery app for iOS and Android with onboarding, cart, checkout and order tracking.</p><span class="year">2025</span></li>
+        <li><a class="title" href="https://github.com/safar-byte/Bussin">Bussin</a><p class="what">Bus schedule and seat booking for Kerala routes, filtered by stop and time of day.</p><span class="year">2024</span></li>
+        <li><a class="title" href="https://github.com/safar-byte/YT-playlist-importer">YT Playlist Importer</a><p class="what">Rebuilds a YouTube playlist from a Google Takeout export with the YouTube Data API.</p><span class="year">2023</span></li>
+        <li><a class="title" href="https://github.com/safar-byte/VidyaApp">VidyaApp</a><p class="what">Cross-platform campus app for VAST-TC — academics, admissions, placements and news.</p><span class="year">2022</span></li>
+        <li><a class="title" href="https://github.com/safar-byte/VAST-TC">VAST-TC Placements</a><p class="what">Android app listing campus placement records year by year.</p><span class="year">2022</span></li>
+      </ul>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">What I work with</h2>
+      <p class="section-lede">Java by day; whatever the problem needs the rest of the time.</p>
+      <dl class="skills">
+        <div><dt>Languages</dt><dd>Java, Python, Kotlin, TypeScript, JavaScript, SQL, C, Solidity</dd></div>
+        <div><dt>Backend and data</dt><dd>FastAPI, Node.js, Express, MongoDB, Elasticsearch, ChromaDB</dd></div>
+        <div><dt>Frontend and mobile</dt><dd>React, React Native, Expo, Jetpack Compose, Redux, Tailwind CSS</dd></div>
+        <div><dt>AI and infrastructure</dt><dd>Retrieval and reranking, Claude, Amazon Bedrock, Ollama, OpenTelemetry, Docker</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <p class="contact">Want to talk backend, retrieval or anything above? Write to <a href="mailto:safarmuhmmed@gmail.com">safarmuhmmed@gmail.com</a>.</p>
+    <div class="foot-links">
+      <a href="https://github.com/safar-byte">GitHub</a>
+      <a href="https://github.com/safar-byte/neetcode-submissions">NeetCode solutions</a>
+      <a href="https://github.com/safar-byte/TensorTonic-Solutions">TensorTonic solutions</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  // Each span: [label, repo-or-null, start "YYYY-MM", end "YYYY-MM" | "now", detail]
+  const spans = [
+    ['C lab programs', 'Enginnering-Labs', '2022-03', '2022-05', 'Twenty-six C exercises from my B.Tech CSE labs — the first code I put on GitHub.'],
+    ['VAST-TC Placements', 'VAST-TC', '2022-11', '2022-12', 'A native Android app in Java listing my campus’s placement records from 2017 to 2022.'],
+    ['VidyaApp', 'VidyaApp', '2022-12', '2023-02', 'The same campus as a cross-platform React Native app: academics, admissions, placements and news.'],
+    ['YT Playlist Importer', 'YT-playlist-importer', '2023-09', '2023-10', 'A Python script that recreates a YouTube playlist from a Google Takeout CSV.'],
+    ['Bussin', 'Bussin', '2024-03', '2024-04', 'Bus schedules and seat booking for Kerala routes, with a Java backend and a vanilla JS frontend.'],
+    ['SimpLogics Solutions', null, '2024-06', 'now', 'Backend software engineer, working in the Java ecosystem.'],
+    ['GrandGrab', 'GrandGrab_Mobile', '2025-11', '2026-02', 'A food-delivery app in React Native and Expo, from onboarding to order tracking.'],
+    ['Blink Ninja', 'Blink-Ninja', '2026-04', '2026-05', 'A browser staring contest using MediaPipe FaceMesh and the eye aspect ratio.'],
+    ['NeetCode practice', 'neetcode-submissions', '2026-08', 'now', 'Data structures, algorithms and SQL problems, synced from NeetCode on every submission.'],
+    ['PROBE', 'probe', '2026-09', '2026-10', 'Hackathon entry: anomaly detection, root-cause diagnosis with Claude on Bedrock, and automatic runbooks and tickets.'],
+    ['RAG: From Scratch to Production', 'rag-from-scratch-to-production', '2026-09', 'now', 'A thirteen-lesson course and service where every retrieval technique is justified by a benchmark.'],
+  ];
+
+  const AXIS_START = new Date(2022, 0, 1), AXIS_END = new Date(2027, 0, 1);
+  const NOW = new Date();
+  const total = AXIS_END - AXIS_START;
+  const toDate = s => s === 'now' ? NOW : new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, 1);
+  const pct = d => Math.max(0, Math.min(100, (d - AXIS_START) / total * 100));
+  const fmt = s => s === 'now' ? 'now' : new Date(+s.slice(0,4), +s.slice(5,7)-1).toLocaleString('en', { month: 'short', year: 'numeric' });
+
+  // axis ticks (lane backgrounds draw the year gridlines at the same 20% steps)
+  const ticks = document.getElementById('ticks');
+  for (let y = 2022; y <= 2027; y++) {
+    const p = pct(new Date(y, 0, 1));
+    const t = document.createElement('span'); t.textContent = y === 2027 ? '' : y; t.style.left = p + '%'; ticks.appendChild(t);
+  }
+
+  const rows = document.getElementById('rows');
+  spans.forEach(([label, repo, start, end, detail], i) => {
+    const s = pct(toDate(start)), e = pct(toDate(end)), live = end === 'now';
+    const li = document.createElement('li'); li.className = 'row';
+    const id = 'span-' + i;
+    const range = fmt(start) + (live ? ' – now' : end !== start ? ' – ' + fmt(end) : '');
+    li.innerHTML = `
+      <button class="row-btn" aria-expanded="false" aria-controls="${id}">
+        <span class="name"><span class="chev" aria-hidden="true">›</span><span>${label}</span></span>
+        <span class="lane" aria-hidden="true">
+          <span class="bar${live ? ' live' : ''}" style="left:${s}%;width:${Math.max(e - s, 1.2)}%;--i:${i}"></span>
+          <span class="bar-label" style="--i:${i};${e > 70 ? `right:${100 - s}%;padding:0 8px 0 0` : `left:${Math.max(e, s + 1.2)}%`}">${range}</span>
+        </span>
+      </button>
+      <div class="detail" id="${id}" hidden>
+        <p>${detail}${repo ? ` <a href="https://github.com/safar-byte/${repo}">View on GitHub</a>` : ''}</p>
+      </div>`;
+    const btn = li.querySelector('button'), panel = li.querySelector('.detail');
+    btn.setAttribute('aria-label', `${label}, ${range}`);
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+    rows.appendChild(li);
+  });
+</script>
 </body>
 </html>
